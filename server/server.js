@@ -2,7 +2,6 @@ import mongoose from "mongoose"
 
 import config from "../config/config"
 import app from "./express"
-import index from "../index"
 import devBundle from "./devBundel"
 
 app.listen(config.port, (err) => {
@@ -15,10 +14,6 @@ app.listen(config.port, (err) => {
 
 )
 devBundle.compile(app)
-
-app.get('/', (req, res) => {
-  res.status(200).send(index())
-})
 
 mongoose.Promise = global.Promise
 mongoose.connect(config.mongoUri)

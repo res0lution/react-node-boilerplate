@@ -1,6 +1,6 @@
 import React from "react"
-import { render } from "react-dom"
+import { hydrate } from "react-dom"
 
-import HelloMySetup from "./HelloMySetup"
+import App from "./App"
 
-render(<HelloMySetup/>, document.getElementById("root"))
+hydrate(<App/>, document.getElementById("root"))
