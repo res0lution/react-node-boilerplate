@@ -14,21 +14,12 @@ import { Home } from "@material-ui/icons"
 
 import auth from "../auth/auth-helper"
 
-const useStyles = makeStyles( theme => ({
-  card: {
-    maxWidth: 600,
-    margin: "auto",
-    marginTop: theme.spacing(5)
-  },
-  title: {
-    padding:`${theme.spacing(3)}px ${theme.spacing(2.5)}px
-    ${theme.spacing(2)}px`,
-    color: theme.palette.text.secondary
-  },
-  media: {
-    minHeight: 330
+const useStyles = makeStyles({
+  link: {
+    fontWeight: "bold",
+    textDecoration: "none"
   }
-}))
+})
 
 const Menu = () => {
 
@@ -38,7 +29,7 @@ const Menu = () => {
   const isActive = (history, path) => {
 
     if (history.location.pathname == path)
-      return {color: "#ff4081"}
+      return {color: "#ff3d00"}
     else
       return {color: "#ffffff"}
   }
@@ -51,7 +42,7 @@ const Menu = () => {
             React-node boilerplate
           </Typography>
 
-          <Link to="/">
+          <Link className={classes.link} to="/">
             <IconButton 
               aria-label="Home" 
               style={isActive(history, "/")}
@@ -60,7 +51,7 @@ const Menu = () => {
             </IconButton>
           </Link>
 
-          <Link to="/users">
+          <Link className={classes.link} to="/users">
             <Button 
               style={isActive(history, "/users")}
             >
@@ -69,7 +60,7 @@ const Menu = () => {
           </Link>
 
           {!auth.isAuthenticated() && (<span>
-            <Link to="/signup">
+            <Link className={classes.link} to="/signup">
               <Button 
                 style={isActive(history, "/signup")}
               >
@@ -77,7 +68,7 @@ const Menu = () => {
               </Button>
             </Link>
 
-            <Link to="/signin">
+            <Link className={classes.link} to="/signin">
               <Button 
                 style={isActive(history, "/signin")}
               >

@@ -9,15 +9,17 @@ import React from "react"
 import ReactDOMServer from "react-dom/server"
 import { StaticRouter } from "react-router-dom"
 import { ServerStyleSheets, ThemeProvider } from "@material-ui/core/styles"
-import {  createMuiTheme } from "@material-ui/core/styles"
-import { indigo, pink } from "@material-ui/core/colors"
+import { createMuiTheme } from "@material-ui/core/styles"
+import { blue, deepOrange } from "@material-ui/core/colors"
 
 import MainRouter from "./../client/MainRouter"
 import userRoutes from "./routes/user.routes"
 import authRoutes from "./routes/auth.routes"
 import index from "../index"
+import devBundle from "./devBundel"
 
 const app = express()
+devBundle.compile(app)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
@@ -28,25 +30,28 @@ app.use(cors())
 const CURRENT_WORKING_DIR = process.cwd()
 app.use("/dist", express.static(path.join(CURRENT_WORKING_DIR, "dist")))
 
+app.use("/", userRoutes)
+app.use("/", authRoutes)
+
 app.get("*", (req, res) => {
   
   const sheets = new ServerStyleSheets()
   const theme = createMuiTheme({
     palette: {
       primary: {
-        light: "#757de8",
-        main: "#3f51b5",
-        dark: "#002984",
+        light: blue["300"],
+        main: blue["400"],
+        dark: blue["500"],
         contrastText: "#fff",
       },
       secondary: {
-        light: "#ff79b0",
-        main: "#ff4081",
-        dark: "#c60055",
+        light: deepOrange["300"],
+        main: deepOrange["400"],
+        dark: deepOrange["500"],
         contrastText: "#000",
       },
-      openTitle: indigo["400"],
-      protectedTitle: pink["400"],
+      openTitle: blue["400"],
+      protectedTitle: deepOrange["400"],
       type: "light"
     },
   })
@@ -73,9 +78,6 @@ app.get("*", (req, res) => {
     css: css
   }))
 }) 
-
-app.use("/", userRoutes)
-app.use("/", authRoutes)
 
 app.use((err, req, res, next) => {
 

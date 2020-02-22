@@ -10,37 +10,15 @@ import {
   Button,
   DialogActions
 } from "@material-ui/core"
-import { makeStyles } from "@material-ui/core/styles"
 import { Delete } from "@material-ui/icons"
 
 import { remove } from "./api-user"
 import auth from "../auth/auth-helper"
 
-const useStyles = makeStyles( theme => ({
-  card: {
-
-  },
-  title: {
-    padding:`${theme.spacing(3)}px ${theme.spacing(2.5)}px
-    ${theme.spacing(2)}px`,
-    color: theme.palette.text.secondary
-  },
-  textField: {
-
-  },
-  error: {
-
-  },
-  submit: {
-
-  }
-}))
-
 const DeleteUser = (props) => {
 
   const [redirect, setRedirect] = useState(false)
   const [open, setOpen] = useState(false)
-  const classes = useStyles()
 
   const handleClick = () => setOpen(true)
 
@@ -87,7 +65,11 @@ const DeleteUser = (props) => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleRequestClose} color="primary">
+          <Button 
+            onClick={handleRequestClose} 
+            color="primary"
+            variant="contained"
+          >
             Cancel
           </Button>
 
@@ -95,6 +77,7 @@ const DeleteUser = (props) => {
             onClick={deleteAccount} 
             color="secondary"
             autoFocus="autoFocus"
+            variant="outlined"
           >
             Confirm
           </Button>

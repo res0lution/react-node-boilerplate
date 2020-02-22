@@ -18,7 +18,7 @@ const MainRouter = () => {
     if (jssStyles && jssStyles.parentNode)  {
       jssStyles.parentNode.removeChild(jssStyles)
     }
-  })
+  }, [])
   return (
     <div>
       <Menu />

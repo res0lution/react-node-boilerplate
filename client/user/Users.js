@@ -18,9 +18,6 @@ import { Person, ArrowForward } from "@material-ui/icons"
 import { list } from "./api-user"
 
 const useStyles = makeStyles( theme => ({
-  root: {
-
-  },
   title: {
     padding:`${theme.spacing(3)}px ${theme.spacing(2.5)}px
     ${theme.spacing(2)}px`,
@@ -44,7 +41,7 @@ const Users = () => {
   }, [])
 
   return (
-    <Paper className={classes.root} elevation={4}>
+    <Paper elevation={4}>
       <Typography type="title" className={classes.title}>
         All Users
       </Typography>

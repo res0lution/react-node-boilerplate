@@ -16,22 +16,10 @@ import { signin } from "./api-auth"
 import auth from "./auth-helper"
 
 const useStyles = makeStyles( theme => ({
-  card: {
-
-  },
   title: {
     padding:`${theme.spacing(3)}px ${theme.spacing(2.5)}px
     ${theme.spacing(2)}px`,
     color: theme.palette.text.secondary
-  },
-  textField: {
-
-  },
-  error: {
-
-  },
-  submit: {
-
   }
 }))
 
@@ -85,7 +73,7 @@ const SignIn = (props) => {
   }
 
   return (
-    <Card className={classes.card}>
+    <Card>
       <CardContent>
         <Typography 
           type="headline" 
@@ -98,8 +86,7 @@ const SignIn = (props) => {
         <TextField 
           id="email" 
           type="email" 
-          label="Email" 
-          className={classes.textField} 
+          label="Email"  
           value={email} 
           onChange={handleChange("email")} 
           margin="normal"/>
@@ -108,8 +95,7 @@ const SignIn = (props) => {
         <TextField 
           id="password" 
           type="password" 
-          label="Password" 
-          className={classes.textField} 
+          label="Password"  
           value={password} 
           onChange={handleChange("password")} 
           margin="normal"
@@ -119,7 +105,7 @@ const SignIn = (props) => {
         {
           error && (
             <Typography component="p" color="error">
-              <Icon color="error" className={classes.error}>error</Icon>
+              <Icon color="error">error</Icon>
               {error}
             </Typography>
           )
@@ -131,7 +117,6 @@ const SignIn = (props) => {
           color="primary" 
           variant="contained" 
           onClick={handleSubmit} 
-          className={classes.submit}
         >
           Submit
         </Button>

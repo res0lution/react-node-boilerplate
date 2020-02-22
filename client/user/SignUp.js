@@ -20,19 +20,10 @@ import { makeStyles } from "@material-ui/core/styles"
 import { create } from "./api-user"
 
 const useStyles = makeStyles( theme => ({
-  card: {
-
-  },
   title: {
     padding:`${theme.spacing(3)}px ${theme.spacing(2.5)}px
     ${theme.spacing(2)}px`,
     color: theme.palette.text.secondary
-  },
-  textField: {
-
-  },
-  error: {
-
   }
 }))
 
@@ -80,7 +71,7 @@ const SignUp = () => {
 
   return (
     <div>
-      <Card className={classes.card}>
+      <Card>
         <CardContent>
           <Typography 
             type="headline" 
@@ -93,7 +84,6 @@ const SignUp = () => {
           <TextField 
             id="name" 
             label="Name"
-            className={classes.textField}
             value={name}
             onChange={handleChange("name")}
             margin="normal"
@@ -103,8 +93,7 @@ const SignUp = () => {
           <TextField 
             id="email" 
             type="email" 
-            label="Email"
-            className={classes.textField} 
+            label="Email" 
             value={email}
             onChange={handleChange("email")}
             margin="normal"
@@ -115,7 +104,6 @@ const SignUp = () => {
             id="password" 
             type="password"
             label="Password" 
-            className={classes.textField}
             value={password}
             onChange={handleChange("password")}
             margin="normal"
@@ -126,7 +114,6 @@ const SignUp = () => {
             <Typography component="p" color="error">
               <Icon 
                 color="error"
-                className={classes.error}
               >
                 error
               </Icon>
@@ -138,9 +125,8 @@ const SignUp = () => {
         <CardActions>
           <Button 
             color="primary" 
-            raised="raised"
+            variant="contained"
             onClick={handleSubmit}
-            className={classes.submit}
           >
             Submit
           </Button>

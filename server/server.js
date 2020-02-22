@@ -2,7 +2,6 @@ import mongoose from "mongoose"
 
 import config from "../config/config"
 import app from "./express"
-import devBundle from "./devBundel"
 
 app.listen(config.port, (err) => {
 
@@ -13,7 +12,6 @@ app.listen(config.port, (err) => {
   }
 
 )
-devBundle.compile(app)
 
 mongoose.Promise = global.Promise
 mongoose.connect(config.mongoUri)

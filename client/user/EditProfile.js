@@ -16,22 +16,10 @@ import { read, update } from "./api-user"
 import auth from "../auth/auth-helper"
 
 const useStyles = makeStyles( theme => ({
-  card: {
-
-  },
   title: {
     padding:`${theme.spacing(3)}px ${theme.spacing(2.5)}px
     ${theme.spacing(2)}px`,
     color: theme.palette.text.secondary
-  },
-  textField: {
-
-  },
-  error: {
-
-  },
-  submit: {
-
   }
 }))
 
@@ -110,7 +98,7 @@ const EditProfile = (props) => {
   }
 
   return (
-    <Card className={classes.card}>
+    <Card>
       <CardContent>
         <Typography 
           type="headline" 
@@ -123,7 +111,6 @@ const EditProfile = (props) => {
         <TextField 
           id="name" 
           label="Name" 
-          className={classes.textField} 
           value={name} 
           onChange={handleChange("name")} 
           margin="normal"
@@ -134,7 +121,6 @@ const EditProfile = (props) => {
           id="email" 
           type="email" 
           label="Email" 
-          className={classes.textField} 
           value={email} 
           onChange={handleChange("email")} 
           margin="normal"
@@ -144,8 +130,7 @@ const EditProfile = (props) => {
         <TextField 
           id="password" 
           type="password" 
-          label="Password" 
-          className={classes.textField} 
+          label="Password"  
           value={password} 
           onChange={handleChange("password")} 
           margin="normal"
@@ -155,7 +140,7 @@ const EditProfile = (props) => {
         {
           error && (
             <Typography component="p" color="error">
-              <Icon color="error" className={classes.error}>
+              <Icon color="error">
                 error
               </Icon>
               {error}
@@ -169,7 +154,6 @@ const EditProfile = (props) => {
           color="primary" 
           variant="contained" 
           onClick={handleSubmit} 
-          className={classes.submit}
         >
           Submit
         </Button>
