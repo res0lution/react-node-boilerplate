@@ -28,32 +28,31 @@ const useStyles = makeStyles( theme => ({
   }
 }))
 
-const Profile = (props) => {
+const Profile = ({match}) => {
 
   const [user, setUser] = useState("")
   const [redirectToSignIn, setRedirectToSignIn] = useState(false)
+  const jwt = auth.isAuthenticated()
   const classes = useStyles()
 
-  const init = userId => {
-    const jwt = auth.isAuthenticated()
-    read({
-      userId: userId
-    }, 
-    {t: jwt.token})
-      .then( data => {
-
-        if (data.error) {
-          setRedirectToSignIn(true)
-        } else {
-          setUser(data)
-        }
-      }
-    )
-  }
-
   useEffect(() => {
-    init(props.match.params.userId)  
-  }, [props.match.params.userId])
+    const abortController = new AbortController()
+    const signal = abortController.signal
+
+    read({
+      userId: match.params.userId
+    }, {t: jwt.token}, signal).then( data => {
+      if (data && data.error) {
+        setRedirectToSignIn(true)
+      } else {
+        setUser(data)
+      }
+    })
+
+    return () => {
+      abortController.abort()
+    }
+  }, [match.params.userId])
 
   if (redirectToSignIn) {
     return (<Redirect to="/signin"/>)

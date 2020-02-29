@@ -29,42 +29,31 @@ const useStyles = makeStyles( theme => ({
 
 const SignUp = () => {
 
-  const [name, setName] = useState("")
-  const [password, setPassword] = useState("")
-  const [email, setEmail] = useState("")
-  const [open, setOpen] = useState(false)
-  const [error, setError] = useState("")
+  const [values, setValues] = useState({
+    name: "",
+    password: "",
+    email: "",
+    open: false,
+    error: ""
+  })
   const classes = useStyles()
 
-  const handleChange = field => event => {
-    switch(field) {
-      case "name":
-        setName(event.target.value)
-        break
-      case "email":
-        setEmail(event.target.value)
-        break
-      case "password":
-        setPassword(event.target.value)
-        break
-      default:
-        break
-    }
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value })
   }
 
   const handleSubmit = () => {
     const user = {
-      name: name || undefined,
-      email: email || undefined,
-      password: password || undefined
+      name: values.name || undefined,
+      email: values.email || undefined,
+      password: values.password || undefined
     }
     create(user).then( data => {
 
       if (data.error) {
-        setError(data.error)
+        setValues({ ...values, error: data.error})
       } else {
-        setError("")
-        setOpen(true)
+        setValues({ ...values, error: "", open: true})
       }
     })
   }
@@ -84,7 +73,7 @@ const SignUp = () => {
           <TextField 
             id="name" 
             label="Name"
-            value={name}
+            value={values.name}
             onChange={handleChange("name")}
             margin="normal"
           />
@@ -94,7 +83,7 @@ const SignUp = () => {
             id="email" 
             type="email" 
             label="Email" 
-            value={email}
+            value={values.email}
             onChange={handleChange("email")}
             margin="normal"
           />
@@ -104,20 +93,20 @@ const SignUp = () => {
             id="password" 
             type="password"
             label="Password" 
-            value={password}
+            value={values.password}
             onChange={handleChange("password")}
             margin="normal"
           />
           <br/>
 
-          {error && (
+          {values.error && (
             <Typography component="p" color="error">
               <Icon 
                 color="error"
               >
                 error
               </Icon>
-              {error}
+              {values.error}
             </Typography>
           )}
         </CardContent>
@@ -133,7 +122,7 @@ const SignUp = () => {
         </CardActions>
       </Card>
 
-    <Dialog open={open} disableBackdropClick={true}>
+    <Dialog open={values.open} disableBackdropClick={true}>
       <DialogTitle>New Account</DialogTitle>
 
       <DialogContent>

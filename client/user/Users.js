@@ -31,13 +31,20 @@ const Users = () => {
   const classes = useStyles()
 
   useEffect(() => {
-    list().then( data => {
-      if (data.error) {
+    const abortController = new AbortController()
+    const signal = abortController.signal
+
+    list(signal).then( data => {
+
+      if (data && data.error) {
         console.log(data.error)
       } else {
         setUsers(data)
       }
-    })      
+
+    })  
+    
+    return () => abortController.abort()
   }, [])
 
   return (

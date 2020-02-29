@@ -25,41 +25,39 @@ const useStyles = makeStyles( theme => ({
 
 const SignIn = (props) => {
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const [redirectTo, setRedirectTo] = useState(false)
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+    error: "",
+    redirectTo: false
+  })
   const classes = useStyles()
 
   const handleSubmit = () => {
     const user = {
-      email: email || undefined,
-      password: password || undefined
+      email: values.email || undefined,
+      password: values.password || undefined
     }
 
     signin(user).then( data => {
 
       if (data.error) {
-        setError(data.error)
+        setValues({ ...values, error: data.error})
       } else {
         auth.authenticate(data, () => {
-          setRedirectTo(true)
+          setValues({ 
+            ...values, 
+            error: "",
+            redirectTo: true
+          })
         })
       }
+
     })
   }
 
-  const handleChange = field => event => {
-    switch(field) {
-      case "email":
-        setEmail(event.target.value)
-        break
-      case "password":
-        setPassword(event.target.value)
-        break
-      default:
-        break
-    }
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value })
   }
 
   const { from } = props.location.state || {
@@ -68,7 +66,7 @@ const SignIn = (props) => {
     }
   }
 
-  if (redirectTo) {
+  if (values.redirectTo) {
     return (<Redirect to={from}/>)
   }
 
@@ -87,7 +85,7 @@ const SignIn = (props) => {
           id="email" 
           type="email" 
           label="Email"  
-          value={email} 
+          value={values.email} 
           onChange={handleChange("email")} 
           margin="normal"/>
           <br/>
@@ -96,17 +94,17 @@ const SignIn = (props) => {
           id="password" 
           type="password" 
           label="Password"  
-          value={password} 
+          value={values.password} 
           onChange={handleChange("password")} 
           margin="normal"
         />
         <br/> 
         
         {
-          error && (
+          values.error && (
             <Typography component="p" color="error">
               <Icon color="error">error</Icon>
-              {error}
+              {values.error}
             </Typography>
           )
         }

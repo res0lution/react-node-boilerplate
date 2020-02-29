@@ -23,78 +23,75 @@ const useStyles = makeStyles( theme => ({
   }
 }))
 
-const EditProfile = (props) => {
+const EditProfile = ({match}) => {
 
-  const [redirectToProfile, setRedirectToProfile] = useState(false)
-  const [name, setName] = useState("")
-  const [userId, setUserId] = useState("")
-  const [password, setPassword] = useState("")
-  const [email, setEmail] = useState("")
-  const [error, setError] = useState("")
+  const [values, setValues] = useState({
+    userId: "",
+    name: "",
+    password: "",
+    email: "",
+    open: false,
+    error: "",
+    redirectToProfile: false
+  })
+  const jwt = auth.isAuthenticated()
   const classes = useStyles()
 
-  const init = userId => {
-    const jwt = auth.isAuthenticated()
-    read({
-      userId: userId
-    }, 
-    {t: jwt.token})
-      .then( data => {
-
-        if (data.error) {
-          setError(data.error)
-        } else {
-          setName(data.name)
-          setEmail(data.email)
-        }
-      }
-    )
-  }
-
   useEffect(() => {
-    init(props.match.params.userId)
+    const abortController = new AbortController()
+    const signal = abortController.signal
+
+    read({
+      userId: match.params.userId
+    }, {t: jwt.token}, signal).then( data => {
+
+      if (data && data.error) {
+        setValues({...values, error: data.error})
+      } else {
+        setValues({
+          ...values, 
+          name: data.name, 
+          email: data.email
+        })
+      }
+
+    })
+    return () => {
+      abortController.abort()
+    }
   }, [])
 
   const handleSubmit = () => {
-    const jwt = auth.isAuthenticated()
     const user = {
-      name: name || undefined,
-      email: email || undefined,
-      password: password || undefined
+      name: values.name || undefined,
+      email: values.email || undefined,
+      password: values.password || undefined
     }
     update({
-      userId: props.match.params.userId
+      userId: match.params.userId
     }, {
       t: jwt.token
     }, user).then( data => {
 
-      if (data.error) {
-        setError(data.error)
+      if (data && data.error) {
+        setValues({...values, error: data.error})
       } else {
-        setUserId(data._id)
-        setRedirectToProfile(true)
+        setValues({
+          ...values, 
+          userId: data._id, 
+          redirectToProfile: true
+        })
       }
+
     })
   }
 
-  const handleChange = field => event => {
-    switch(field) {
-      case "name":
-        setName(event.target.value)
-        break
-      case "email":
-        setEmail(event.target.value)
-        break
-      case "password":
-        setPassword(event.target.value)
-        break
-      default:
-        break
-    }
+  const handleChange = name => event => {
+    setValues({...values, [name]: event.target.value})
   }
 
-  if (redirectToProfile) {
-    return (<Redirect to={"/user/" + userId}/>)
+  if (values.redirectToProfile) {
+    return (<Redirect to={"/user/" + values.userId}/>)
   }
 
   return (
@@ -111,7 +108,7 @@ const EditProfile = (props) => {
         <TextField 
           id="name" 
           label="Name" 
-          value={name} 
+          value={values.name} 
           onChange={handleChange("name")} 
           margin="normal"
         />
@@ -121,7 +118,7 @@ const EditProfile = (props) => {
           id="email" 
           type="email" 
           label="Email" 
-          value={email} 
+          value={values.email} 
           onChange={handleChange("email")} 
           margin="normal"
         />
@@ -131,19 +128,19 @@ const EditProfile = (props) => {
           id="password" 
           type="password" 
           label="Password"  
-          value={password} 
+          value={values.password} 
           onChange={handleChange("password")} 
           margin="normal"
         />
         <br/> 
         
         {
-          error && (
+          values.error && (
             <Typography component="p" color="error">
               <Icon color="error">
                 error
               </Icon>
-              {error}
+              {values.error}
             </Typography>
           )
         }
