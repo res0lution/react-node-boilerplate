@@ -75,7 +75,20 @@ const Menu = () => {
                 Sign In
               </Button>
             </Link>
-          </span>)}
+          </span>)
+        }
+
+        {
+          auth.isAuthenticated() && (
+            <span>
+              <Button 
+                color="inherit" 
+                onClick={() => {auth.clearJwt(() => history.push("/"))}}
+              >
+                Sign out
+              </Button>
+            </span>
+          )}
         </Toolbar>
       </AppBar>
     </div>
